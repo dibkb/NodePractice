@@ -1,7 +1,17 @@
 const fs = require("fs/promises");
 (async () => {
+  const createFile = async (path) => {
+    let fileExit;
+    try {
+      fileExit = await fs.open(path, "r");
+      fileExit.close();
+      return console.log(`The file ${path} alredy exist`);
+    } catch (e) {}
+    const newFileHandle = await fs.open(path, "w");
+    console.log("New file creatred");
+    newFileHandle.close();
+  };
   const commandFileHandler = await fs.open("./command.txt", "r");
-
   commandFileHandler.on("change", async () => {
     //   get size of the file
     const size = (await commandFileHandler.stat()).size;
@@ -19,9 +29,15 @@ const fs = require("fs/promises");
       length,
       position
     );
+
     // console.log(content);
-    const contentBuff = content.buffer;
-    console.log(contentBuff.toString("utf-8"));
+    const command = content.buffer.toString("utf-8");
+    //   create a file
+    //   🚀 <file>
+    if (command.includes("🚀")) {
+      const path = command.substring(command.includes("🚀") + 1);
+      createFile(path);
+    }
   });
   const watcher = fs.watch("./");
   for await (const event of watcher) {
