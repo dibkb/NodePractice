@@ -19,7 +19,9 @@ const fs = require("fs/promises");
       length,
       position
     );
-    console.log(content);
+    // console.log(content);
+    const contentBuff = content.buffer;
+    console.log(contentBuff.toString("utf-8"));
   });
   const watcher = fs.watch("./");
   for await (const event of watcher) {
