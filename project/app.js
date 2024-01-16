@@ -6,7 +6,9 @@ const fs = require("fs/promises");
       fileExit = await fs.open(path, "r");
       fileExit.close();
       return console.log(`The file ${path} alredy exist`);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
     const newFileHandle = await fs.open(path, "w");
     console.log("New file creatred");
     newFileHandle.close();
@@ -35,7 +37,7 @@ const fs = require("fs/promises");
     //   create a file
     //   🚀 <file>
     if (command.includes("🚀")) {
-      const path = command.substring(command.includes("🚀") + 1);
+      const path = command.substring("🚀".length + 1);
       createFile(path);
     }
   });
